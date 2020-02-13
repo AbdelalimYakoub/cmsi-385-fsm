@@ -19,17 +19,24 @@ export default class DeterministicFiniteStateMachine {
   accepts(string, state = this._startState) {
     var i;
     for (i = 0; i < string.length; i++) {
-      nextState = transition(state, string..charAt(i));
+      nextState = this.transition(state, string..charAt(i));
       state = nextState;
       }
 
-    if(this._acceptStates.includes(state)) {
-      return "Accepted";
-      }
-      else {
-        return "Rejected";
-      }
+    return this._acceptStates.includes(state);
     }
+
+    // PROFESSORS METHOD
+    // isAcceptState(state) {
+    //   return this._acceptStates.includes(state);
+    // }
+
+    // accepts(string, state = this._startState) {
+    //   const nextState = this.transition(state, string.charAt(0));
+    //
+    //   return (string.length === 0) ? this.isAcceptState(state) :
+    //                                  this.accepts(string.substr(1), nextState)
+    // }
   }
 
 }

@@ -188,13 +188,19 @@ export function minimize(dfa) {
 
   // Constructing new dfa
   const startState = dfa.startState;
-  const acceptStates = [];
   const transitions = {};
+  const acceptStates = [];
   const alphabet = new Set([...dfa.alphabet()]);
   
   const stateName = []; 
   for (const list of Object.values(minimizedSets)) {
     stateName.push(list[0]);
+    for(const acceptState of acceptStatesSet) {
+      if(list.includes(acceptState)) {
+        acceptStates.push(list[0]);
+        break;
+      }
+    }
   }
 
   const stateSetMap = getStateSetMap(dfa.states(), minimizedSets);
@@ -206,7 +212,6 @@ export function minimize(dfa) {
     }
   }
 
-  return dfa;
   return new DeterministicFiniteStateMachine({
     acceptStates,
     startState,

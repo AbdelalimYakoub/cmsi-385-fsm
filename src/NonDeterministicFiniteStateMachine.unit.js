@@ -1,4 +1,5 @@
 import NonDeterministicFiniteStateMachine, { LAMBDA } from './NonDeterministicFiniteStateMachine';
+import DeterministicFiniteStateMachine from './DeterministicFiniteStateMachine';
 
 const tests = {
   divisibleBy4: {
@@ -106,3 +107,86 @@ debugger
   }
 });
 
+// NFA TO DFA TESTING
+const testNFAdescription0 = {
+  transitions: {
+     A: {
+       0: ['A', 'B'],
+       1: ['A'],
+     },
+     B: {
+       0: ['C'],
+     },
+     C: {
+     },
+   },
+   startState: 'A',
+   acceptStates: ['C'],
+}
+
+const testNFAdescription1 = {
+  transitions: {
+     A: {
+       0: ['B'],
+     },
+     B: {
+       1: ['C'],
+     },
+     C: {
+       0: ['D'],
+     },
+     D: {
+       0: ['D', 'E'],
+       1: ['D'],
+     },
+     E: {
+       1: ['F'],
+     },
+     F: {
+       0: ['G'],
+     },
+     G: {
+     },
+   },
+   startState: 'A',
+   acceptStates: ['G'],
+}
+
+const testNFAdescription2 = {
+  transitions: {
+     A: {
+       [LAMBDA]: ['B'],
+     },
+     B: {
+       0: ['C'],
+     },
+     C: {
+       1: ['D'],
+     },
+     D: {
+       1: ['E'],
+     },
+     E: {
+       [LAMBDA]: ['A'],
+     },
+   },
+   startState: 'A',
+   acceptStates: ['A'],
+}
+
+function testNFAtoDFA(nfaDesc) {
+  const testNFA = new NonDeterministicFiniteStateMachine(nfaDesc);
+  const solutionDFA = testNFA.toDFA();
+  console.log("Trainsitions:");
+  console.log(solutionDFA.transitions);
+  console.log("Start State:");
+  console.log(solutionDFA.startState);
+  console.log("Accept State(s):");
+  console.log(solutionDFA.acceptStates);
+}
+
+testNFAtoDFA(testNFAdescription0);
+console.log("");
+testNFAtoDFA(testNFAdescription1);
+console.log("");
+testNFAtoDFA(testNFAdescription2);
